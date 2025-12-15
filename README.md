@@ -112,7 +112,7 @@ Audit logs can be retrieved via `/audit` (JWT required).
 Swagger documentation is available at:
 
 ```
-http://192.168.1.185/api
+http://localhost:3000/api#/
 ```
 
 It provides:
