@@ -1,29 +1,21 @@
+global['crypto'] = require('crypto'); 
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
-
-// Import các Module con
 import { FilesModule } from './files/files.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-
-// Import các Entity
 import { FileEntity } from './files/entities/file.entity';
 import { User } from './users/entities/user.entity'; 
-
-// Import các Audit
 import { AuditModule } from './audit/audit.module';
 import { AuditLog } from './audit/audit.entity';
 
 @Module({
   imports: [
-    // 1. Cấu hình biến môi trường
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
-    // 2. Kết nối Database
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -41,7 +33,6 @@ import { AuditLog } from './audit/audit.entity';
       inject: [ConfigService],
     }),
 
-    // 3. Kết nối Redis
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -53,7 +44,6 @@ import { AuditLog } from './audit/audit.entity';
       inject: [ConfigService],
     }),
 
-    // 4. Các Module chức năng
     FilesModule,
     AuthModule,  
     UsersModule, 

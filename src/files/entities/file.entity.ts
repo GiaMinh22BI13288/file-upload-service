@@ -1,5 +1,4 @@
-// 1. Thêm 'ManyToOne' vào dòng import này
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm'; 
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, DeleteDateColumn  } from 'typeorm'; 
 import { User } from '../../users/entities/user.entity';
 
 export enum FileStatus {
@@ -37,6 +36,9 @@ export class FileEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn() 
+  deletedAt: Date;
 
   // Quan hệ với bảng User
   @ManyToOne(() => User, (user) => user.files)

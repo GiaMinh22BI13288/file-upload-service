@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Brackets } from 'typeorm';
 import { FileEntity, FileStatus } from './entities/file.entity';
 
 @Injectable()
@@ -33,6 +33,31 @@ export class FilesService {
     take: limit,
     order: { createdAt: 'DESC' }
   });
+  }
+
+  async remove(id: string, userId: string) {
+    const file = await this.fileRepository.findOne({
+      where: { id, user: { id: userId } }
+    });
+
+    if (!file) {
+      throw new NotFoundException('File không tồn tại hoặc bạn không có quyền xóa');
+    }
+
+    return await this.fileRepository.softDelete(id);
+  }
+
+  async searchFiles(userId: string, keyword: string) {
+    return await this.fileRepository.createQueryBuilder('file')
+      .where('file.userId = :userId', { userId }) 
+      
+      .andWhere(new Brackets(qb => {
+        qb.where('file.originalName ILIKE :keyword', { keyword: `%${keyword}%` })
+          .orWhere('file.metadata::text ILIKE :keyword', { keyword: `%${keyword}%` })
+      }))
+      
+      .orderBy('file.createdAt', 'DESC')
+      .getMany();
   }
   async findOne(id: string, userId: string) {
   return await this.fileRepository.findOne({
