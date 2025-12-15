@@ -5,7 +5,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { FilesService } from './files.service';
 import { extname } from 'path';
-// 👇👇👇 1. Cập nhật Import: Thêm ApiOperation, ApiResponse
+import { AuditInterceptor } from '../audit/audit.interceptor'; 
 import { ApiBody, ApiConsumes, ApiTags, ApiBearerAuth, ApiQuery, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express'; 
 import { AuthGuard } from '@nestjs/passport';
@@ -13,6 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 @ApiTags('files') 
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
+@UseInterceptors(AuditInterceptor) 
 @Controller('files')
 export class FilesController {
   constructor(
