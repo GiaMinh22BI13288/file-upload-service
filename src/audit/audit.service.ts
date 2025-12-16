@@ -17,7 +17,7 @@ export class AuditService {
       action, 
       method, 
       ip, 
-      status // Lưu status vào DB
+      status 
     });
     return await this.auditRepo.save(newLog);
   }
@@ -27,7 +27,7 @@ export class AuditService {
     const skip = (page - 1) * limit;
 
     const [data, total] = await this.auditRepo.findAndCount({
-      relations: ['user'], // <--- Lấy thêm thông tin User
+      relations: ['user'], 
       order: { timestamp: 'DESC' },
       skip: skip,
       take: limit,

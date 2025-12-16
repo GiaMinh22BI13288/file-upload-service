@@ -22,7 +22,7 @@ export class AuditController {
     // Format dữ liệu để khớp với cái bảng trong ảnh
     const formattedData = data.map((log, index) => ({
       stt: (Number(page) - 1) * Number(limit) + index + 1, // Tính số thứ tự: 1, 2, 3...
-      account: log.user ? log.user.username : '---', // Cột Tài khoản
+      account: log.user ? log.user.username : 'admin', // Cột Tài khoản
       fullName: log.user ? log.user.fullName : '---',           // Cột Họ và tên
       unit: 'Phòng IT',                                       // Cột Đơn vị (Hiện tại fix cứng, sau này thêm bảng Unit sau)
       description: log.action,                                // Cột Mô tả
