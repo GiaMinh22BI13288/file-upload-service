@@ -13,6 +13,8 @@ export class AuditInterceptor implements NestInterceptor {
     // Lấy IP chuẩn (ưu tiên x-forwarded-for)
     const ip = request.headers['x-forwarded-for'] || request.ip || request.socket.remoteAddress; 
     
+    console.log('>>> [Audit Debug] User info:', user); 
+
     // Nếu user chưa login (hoặc login thất bại), userId sẽ null
     const userId = user ? user.userId : null;
 
